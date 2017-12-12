@@ -5,6 +5,7 @@ import AppRouter from "./components/AppRouter/AppRouter";
 import {BrowserRouter} from "react-router-dom";
 import {Provider} from "react-redux";
 import createStore from "./store";
+window.Chart = require("chart.js");
 
 const store = createStore();
 
