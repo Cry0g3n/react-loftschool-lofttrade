@@ -7,14 +7,14 @@ import {CurrencyItem} from "./Styles";
 const Btc = ({disabled, price, currency, cur}) => (
     <div>
         {!disabled ? (
-            <Link className="toggle-cur" to="/trade/btc">
+            <Link className="currency_link" to="/trade/btc">
                 <CurrencyItem>
                     {cur}
                     <b>1 BTC</b>
                 </CurrencyItem>
             </Link>
         ) : (
-            <CurrencyItem>
+            <CurrencyItem className="currency_toggle">
                 {cur}
                 <b>1 BTC</b>
             </CurrencyItem>

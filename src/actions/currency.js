@@ -30,10 +30,10 @@ export const fetchEthFailure = actionCreators.currency.fetchEthFailure;
 export const fetchEthSuccess = actionCreators.currency.fetchEthSuccess;
 export const selectOffset = actionCreators.currency.selectOffset;
 
-// export const sellCurrencyRequest = actionCreators.currency.sellCurrencyRequest;
-// export const sellCurrencySuccess = actionCreators.currency.sellCurrencySuccess;
-// export const sellCurrencyFailure = actionCreators.currency.sellCurrencyFailure;
+// export const sellCurrencyRequest = actionCreators.Currency.sellCurrencyRequest;
+// export const sellCurrencySuccess = actionCreators.Currency.sellCurrencySuccess;
+// export const sellCurrencyFailure = actionCreators.Currency.sellCurrencyFailure;
 //
-// export const buyCurrencyRequest = actionCreators.currency.buyCurrencyRequest;
-// export const buyCurrencySuccess = actionCreators.currency.buyCurrencySuccess;
-// export const buyCurrencyFailure = actionCreators.currency.buyCurrencyFailure;
+// export const buyCurrencyRequest = actionCreators.Currency.buyCurrencyRequest;
+// export const buyCurrencySuccess = actionCreators.Currency.buyCurrencySuccess;
+// export const buyCurrencyFailure = actionCreators.Currency.buyCurrencyFailure;
