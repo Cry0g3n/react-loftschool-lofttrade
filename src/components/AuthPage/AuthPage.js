@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {Particles} from 'react-particles-js';
 import {connect} from 'react-redux';
-import './styles.css';
 import particlesParams from '../../particles-params';
 import logo from '../../assets/Logo.svg';
 // import iconUser from '../../assets/login/user-shape.svg';
