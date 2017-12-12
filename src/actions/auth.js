@@ -1,18 +1,17 @@
-import {createAction, createActions} from 'redux-actions';
+import {createActions} from 'redux-actions';
 
 export const {
     loginRequest,
     loginSuccess,
-    loginFailure,
+    loginReject,
     registrationRequest,
-    registrationSuccess,
-    registrationFailure
+    registrationReject,
+    logout
 } = createActions(
     'LOGIN_REQUEST',
     'LOGIN_SUCCESS',
-    'LOGIN_FAILURE',
+    'LOGIN_REJECT',
     'REGISTRATION_REQUEST',
-    'REGISTRATION_SUCCESS',
-    'REGISTRATION_FAILURE'
+    'REGISTRATION_REJECT',
+    'LOGOUT'
 );
-export const logout = createAction("LOGOUT");

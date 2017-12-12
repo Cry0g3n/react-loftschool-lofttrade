@@ -1,52 +1,77 @@
+import {handleActions} from 'redux-actions';
+import {combineReducers} from 'redux'
+
 import {
     loginRequest,
+    loginReject,
     loginSuccess,
-    loginFailure,
     registrationRequest,
-    registrationFailure
-} from "../actions/auth";
-import {handleActions} from "redux-actions";
-import {combineReducers} from "redux";
+    registrationReject,
+    logout
+} from '../actions/auth';
 
-const initialState = null;
-export const isAuthorized = handleActions(
-    {
-        [loginRequest]: () => false,
-        [loginSuccess]: () => true,
-        [loginFailure]: () => false,
-        [registrationRequest]: () => false,
-        [registrationFailure]: () => false
+export const isFetching = handleActions({
+        [loginRequest]: () => true,
+        [loginSuccess]: () => false,
+        [loginReject]: () => false,
+        [registrationRequest]: () => true,
+        [registrationReject]: () => false,
+        [logout]: () => false,
     },
     false
 );
 
-export const loginError = handleActions(
-    {
-        [loginRequest]: () => initialState,
-        [loginSuccess]: () => initialState,
-        [loginFailure]: (state, action) => action.payload,
-        [registrationRequest]: () => initialState,
-        [registrationFailure]: () => initialState
+export const isFetched = handleActions({
+        [loginRequest]: () => false,
+        [loginSuccess]: () => true,
+        [loginReject]: () => true,
+        [registrationRequest]: () => false,
+        [registrationReject]: () => true,
+        [logout]: () => false,
     },
-    initialState
+    false
 );
 
-export const regError = handleActions(
-    {
-        [loginRequest]: () => initialState,
-        [loginSuccess]: () => initialState,
-        [loginFailure]: () => initialState,
-        [registrationRequest]: () => initialState,
-        [registrationFailure]: (state, action) => action.payload
+export const token = handleActions({
+        [loginRequest]: () => null,
+        [loginSuccess]: (state, action) => action.payload,
+        [loginReject]: () => null,
+        [registrationRequest]: () => null,
+        [registrationReject]: () => null,
+        [logout]: () => null,
     },
-    initialState
+    null
+);
+
+export const error = handleActions({
+        [loginRequest]: () => null,
+        [loginSuccess]: () => null,
+        [loginReject]: (state, action) => action.payload,
+        [registrationRequest]: () => null,
+        [registrationReject]: (state, action) => action.payload,
+        [logout]: () => null,
+    },
+    null
 );
 
 export default combineReducers({
-    isAuthorized,
-    loginError,
-    regError
+    isFetching,
+    isFetched,
+    token,
+    error
 });
-export const getIsAuthorized = state => state.auth.isAuthorized;
-export const getLoginError = state => state.auth.loginError;
-export const getRegistrationError = state => state.auth.regError;
+
+export const getIsAuthorized = state => !!state.auth.token;
+export const getError = state => {
+    const {error} = state.auth;
+
+    if (error) {
+        if (error.data && error.data.message) {
+            return error.data.message;
+        }
+
+        return 'Network error';
+    }
+
+    return null;
+};

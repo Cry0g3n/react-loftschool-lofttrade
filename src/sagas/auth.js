@@ -1,38 +1,65 @@
+import {call, take, select, put} from 'redux-saga/effects';
+
 import {
     loginRequest,
+    loginReject,
     loginSuccess,
-    loginFailure,
     registrationRequest,
-    registrationSuccess,
-    registrationFailure
-} from "../actions/auth";
-import {takeLatest, call, put} from "redux-saga/effects";
-import {login, registration, setTokenApi} from "../api";
+    registrationReject,
+    logout
+} from '../actions/auth';
+import {getIsAuthorized} from '../reducers/auth';
+import {
+    getTokenFromLocalStorage,
+    setTokenToLocalStorage,
+    removeTokenFromLocalStorage
+} from '../localstorage';
+import {login, registration, clearTokenApi, setTokenApi} from '../api';
 
-export function* authorizeUser(action) {
-    const {mail, password} = action.payload;
-    try {
-        let response = yield call(login, {mail, password});
-        yield put(loginSuccess(response));
-    } catch (error) {
-        yield put(loginFailure(error));
-    }
-}
+export default function* () {
+    while (true) {
+        const isAuthorized = yield select(getIsAuthorized);
+        const localStorageToken = yield call(getTokenFromLocalStorage);
+        let token;
 
-export function* registerUser(action) {
-    const {mail: email, password} = action.payload;
-    try {
-        const response = yield call(registration, {email, password});
-        if (response.data.result === "created") {
-            yield call(setTokenApi, response.data.jwt);
-            yield put(registrationSuccess());
+        if (!isAuthorized) {
+            if (localStorageToken) {
+                token = localStorageToken;
+
+                yield put(loginSuccess(token));
+            } else {
+                const action = yield take([loginRequest, registrationRequest]);
+
+                if (action.type === registrationRequest.toString()) {
+                    // Registration
+                    try {
+                        const response = yield call(registration, action.payload);
+                        token = response.data.jwt;
+
+                        yield put(loginSuccess(token));
+                    } catch (error) {
+                        yield put(registrationReject(error));
+                    }
+                } else if (action.type === loginRequest.toString()) {
+                    // Login
+                    try {
+                        const response = yield call(login, action.payload);
+                        token = response.data.jwt;
+
+                        yield put(loginSuccess(token));
+                    } catch (error) {
+                        yield put(loginReject(error));
+                    }
+                }
+            }
         }
-    } catch (error) {
-        yield put(registrationFailure(error));
-    }
-}
 
-export function* authFlow() {
-    yield takeLatest(loginRequest, authorizeUser);
-    yield takeLatest(registrationRequest, registerUser);
+        if (token) {
+            yield call(setTokenApi, token);
+            yield call(setTokenToLocalStorage, token);
+            yield take(logout);
+            yield call(removeTokenFromLocalStorage);
+            yield call(clearTokenApi);
+        }
+    }
 }
