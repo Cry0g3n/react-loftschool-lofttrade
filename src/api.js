@@ -33,3 +33,20 @@ export const registration = ({email, password}) =>
     });
 
 export const candles = (symbol, offset) => instance.get('/candles', {params: {symbol, offset}});
+
+export const getWallet = () => instance.get('/users/wallet');
+
+export const getUserInfo = () => instance.get('/users/me');
+
+export const buyCurrency = (currency, value) =>
+    instance.get(`stock/exchange?symbol=${currency}&operation=purchase&sum=${value}`).then(response => {
+        if (response.data.result === 'error') return Promise.reject(response.data.message);
+        return response;
+    });
+
+export const sellCurrency = (currency, value) =>
+    instance.get(`stock/exchange?symbol=${currency}&operation=sell&sum=${value}`).then(response => {
+        console.log(response)
+        if (response.data.result === 'error') return Promise.reject(response.data.message);
+        return response;
+    });
