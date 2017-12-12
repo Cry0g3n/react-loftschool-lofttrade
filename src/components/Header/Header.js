@@ -3,8 +3,8 @@ import {connect} from "react-redux";
 import {HeaderMain, HeaderWrapper, Logo, CurrencyWrap} from "./Styles";
 import {selectBtc, selectEth} from "../../actions/currency";
 import {withRouter} from "react-router-dom";
-import Btc from "../../components/currency/Btc";
-import Eth from "../../components/currency/Eth";
+import Btc from "../Currency/Btc";
+import Eth from "../Currency/Eth";
 import LogoWhite from "../../assets/Logo-white.svg";
 
 export class Header extends Component {

@@ -2,13 +2,13 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import {LineChart} from "react-chartkick";
 import Spinner from 'react-svg-spinner';
-import HeaderContent from "../Header";
+import Header from "../Header";
 import "./UserPage.css";
 import {
     Content,
     ContentWrapper,
     Main,
-    MainRight,
+    ChartPanel,
     Offsets,
     ButtonOffset,
     Footer
@@ -77,20 +77,19 @@ export class UserPage extends Component {
                 key={el}
                 data-name={el}
                 selected={offset === el}
-            >
-                {offsets[el]}
+            >{offsets[el]}
             </ButtonOffset>
         ));
         return (
             <div style={{height: "100%"}}>
-                <HeaderContent
+                <Header
                     currentBtc={sellBtc[0] ? sellBtc[0][1] : null}
                     currentEth={sellEth[0] ? sellEth[0][1] : null}
                 />
                 <Content>
                     <ContentWrapper>
                         <Main>
-                            <MainRight>
+                            <ChartPanel>
                                 <h2>Окно графика</h2>
                                 <Offsets>{buttons}</Offsets>
                                 {currency === "btc" ? (
@@ -100,7 +99,7 @@ export class UserPage extends Component {
                                         </div>
                                     ) : (
                                         <LineChart
-                                            colors={["#AD1457", "#C5CAE9"]}
+                                            colors={["#3694dc", "#e2428e"]}
                                             data={[
                                                 {name: "Продажа", data: sellBtc},
                                                 {name: "Покупка", data: purchaseBtc}
@@ -117,7 +116,7 @@ export class UserPage extends Component {
                                     </div>
                                 ) : (
                                     <LineChart
-                                        colors={["#C5CAE9", "#009688"]}
+                                        colors={["#3694dc", "#e2428e"]}
                                         data={[
                                             {name: "Продажа", data: sellEth},
                                             {name: "Покупка", data: purchaseEth}
@@ -128,7 +127,7 @@ export class UserPage extends Component {
                                         height={400}
                                     />
                                 )}
-                            </MainRight>
+                            </ChartPanel>
                         </Main>
                     </ContentWrapper>
                 </Content>
@@ -152,9 +151,11 @@ const mapStateToProps = state => ({
     sellBtc: sellBtc(state),
     sellEth: sellEth(state)
 });
+
 const mapDispatchToProps = {
     selectBtc,
     selectEth,
     selectOffset
 };
+
 export default connect(mapStateToProps, mapDispatchToProps)(UserPage);

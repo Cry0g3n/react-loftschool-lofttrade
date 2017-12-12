@@ -1,44 +1,5 @@
 import styled from "styled-components";
 
-export const Header = styled.header`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: #2b2c2e;
-  height: 80px;
-  color: #fff;
-`;
-
-export const HeaderWrapper = styled.div`
-  width: 1200px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-export const Logo = styled.img`
-  width: 180px;
-`;
-
-export const CurrencyWrap = styled.div`
-  display: flex;
-  flex-direction: row;
-`;
-
-export const CurrencyLink = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  height: 80px;
-  justify-content: center;
-  margin: 0 8px;
-  text-decoration: none;
-  cursor: pointer;
-  color: #aaa;
-`;
-
 export const Content = styled.main`
   display: flex;
   flex-direction: column;
@@ -64,7 +25,7 @@ export const Main = styled.div`
   justify-content: space-between;
 `;
 
-export const MainRight = styled.div`
+export const ChartPanel = styled.div`
   width: 750px;
 `;
 
@@ -73,12 +34,12 @@ export const Offsets = styled.div`
 `;
 
 export const ButtonOffset = styled.button`
-  border: 1px solid #1565c0;
+  border: 1px solid #4db6e2;
   margin: 0 4px;
   border-radius: 3px;
   cursor: pointer;
   outline: none;
-  background-color: ${props => (props.selected ? "white" : "#1565C0")};
+  background-color: ${props => (props.selected ? "white" : "#4db6e2")};
   color: ${props => (props.selected ? "#1565C0" : "white")};
   padding: 2px 16px;
 `;
