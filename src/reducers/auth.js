@@ -61,7 +61,7 @@ export default combineReducers({
     error
 });
 
-export const getIsAuthorized = state => !!state.auth.token;
+export const getIsAuthorized = state => state.auth.token;
 export const getError = state => {
     const {error} = state.auth;
 

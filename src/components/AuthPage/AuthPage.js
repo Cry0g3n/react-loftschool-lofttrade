@@ -3,8 +3,8 @@ import {Particles} from 'react-particles-js';
 import {connect} from 'react-redux';
 import particlesParams from '../../particles-params';
 import logo from '../../assets/Logo.svg';
-// import iconUser from '../../assets/login/user-shape.svg';
-// import iconPadlock from '../../assets/login/padlock-unlock.svg';
+import iconUser from '../../assets/login/user-shape.svg';
+import iconPadlock from '../../assets/login/padlock-unlock.svg';
 import {loginRequest, registrationRequest} from '../../actions/auth';
 import {getError} from '../../reducers/auth';
 import {
@@ -65,7 +65,10 @@ export class AuthPage extends Component {
                             <LoginFormWrapper className='form-wrapper'>
                                 <LoginForm>
                                     <EmailInputWrapper>
-                                        <UserIcon></UserIcon>
+                                        <UserIcon
+                                            src={iconUser}
+                                        >
+                                        </UserIcon>
                                         <EmailInput
                                             type="email"
                                             placeholder="Login"
@@ -76,7 +79,10 @@ export class AuthPage extends Component {
                                         </EmailInput>
                                     </EmailInputWrapper>
                                     <PasswordInputWrapper>
-                                        <LockIcon></LockIcon>
+                                        <LockIcon
+                                            src={iconPadlock}
+                                        >
+                                        </LockIcon>
                                         <PasswordInput
                                             type="password"
                                             placeholder="Password"

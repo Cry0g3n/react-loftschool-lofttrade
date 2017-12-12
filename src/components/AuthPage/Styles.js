@@ -55,8 +55,7 @@ export const EmailInputWrapper = styled.div`
     position: relative;
 `;
 
-export const UserIcon = styled.span`
-    //background-image: url('');
+export const UserIcon = styled.img`
     width: 19px;
     height: 19px;
     opacity: 0.4;
@@ -78,8 +77,7 @@ export const PasswordInputWrapper = styled.div`
     position: relative;
 `;
 
-export const LockIcon = styled.span`
-    //background-image: url('');
+export const LockIcon = styled.img`
     width: 19px;
     height: 19px;
     opacity: 0.4;
