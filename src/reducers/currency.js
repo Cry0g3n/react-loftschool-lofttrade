@@ -90,3 +90,35 @@ export const getMin = currency =>
         (acc, {sell, purchase}) => Math.min(acc, sell, purchase),
         Number.MAX_SAFE_INTEGER
     );
+
+export const getCurrentBtcSell = state => {
+    if (state.currency.btc.length > 0) {
+        return state.currency.btc[0].sell;
+    } else {
+        return 0;
+    }
+};
+
+export const getCurrentBtcPurchase = state => {
+    if (state.currency.btc.length > 0) {
+        return state.currency.btc[0].purchase;
+    } else {
+        return 0;
+    }
+};
+
+export const getCurrentEthSell = state => {
+    if (state.currency.eth.length > 0) {
+        return state.currency.eth[0].sell;
+    } else {
+        return 0;
+    }
+};
+
+export const getCurrentEthPurchase = state => {
+    if (state.currency.eth.length > 0) {
+        return state.currency.eth[0].purchase;
+    } else {
+        return 0;
+    }
+};

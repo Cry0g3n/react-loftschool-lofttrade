@@ -1,39 +1,46 @@
 import {createActions} from "redux-actions";
 
-const actionCreators = createActions({
+const actions = createActions({
     CURRENCY: {
-        SELECT_OFFSET: undefined,
-        FETCH_BTC_REQUEST: undefined,
-        FETCH_BTC_SUCCESS: undefined,
-        FETCH_BTC_FAILURE: undefined,
-        FETCH_ETH_REQUEST: undefined,
-        FETCH_ETH_SUCCESS: undefined,
-        FETCH_ETH_FAILURE: undefined,
-        SELECT_BTC: undefined,
-        SELECT_ETH: undefined,
-        SELL_CURRENCY_REQUEST: undefined,
-        SELL_CURRENCY_SUCCESS: undefined,
-        SELL_CURRENCY_FAILURE: undefined,
-        BUY_CURRENCY_REQUEST: undefined,
-        BUY_CURRENCY_SUCCESS: undefined,
-        BUY_CURRENCY_FAILURE: undefined
+        FETCH_BTC_REQUEST: null,
+        FETCH_BTC_SUCCESS: null,
+        FETCH_BTC_FAILURE: null,
+        FETCH_ETH_REQUEST: null,
+        FETCH_ETH_SUCCESS: null,
+        FETCH_ETH_FAILURE: null,
+        SELECT_BTC: null,
+        SELECT_ETH: null,
+        SELECT_OFFSET: null,
+        FETCH_USER_REQUEST: null,
+        FETCH_USER_SUCCESS: null,
+        FETCH_USER_FAILURE: null,
+        SELL_CURRENCY_REQUEST: null,
+        SELL_CURRENCY_SUCCESS: null,
+        SELL_CURRENCY_FAILURE: null,
+        BUY_CURRENCY_REQUEST: null,
+        BUY_CURRENCY_SUCCESS: null,
+        BUY_CURRENCY_FAILURE: null
     }
 });
 
-export const selectBtc = actionCreators.currency.selectBtc;
-export const selectEth = actionCreators.currency.selectEth;
-export const fetchBtcRequest = actionCreators.currency.fetchBtcRequest;
-export const fetchEthRequest = actionCreators.currency.fetchEthRequest;
-export const fetchBtcSuccess = actionCreators.currency.fetchBtcSuccess;
-export const fetchBtcFailure = actionCreators.currency.fetchBtcFailure;
-export const fetchEthFailure = actionCreators.currency.fetchEthFailure;
-export const fetchEthSuccess = actionCreators.currency.fetchEthSuccess;
-export const selectOffset = actionCreators.currency.selectOffset;
+export const fetchBtcRequest = actions.currency.fetchBtcRequest;
+export const fetchEthRequest = actions.currency.fetchEthRequest;
+export const fetchBtcSuccess = actions.currency.fetchBtcSuccess;
+export const fetchBtcFailure = actions.currency.fetchBtcFailure;
+export const fetchEthFailure = actions.currency.fetchEthFailure;
+export const fetchEthSuccess = actions.currency.fetchEthSuccess;
+export const selectBtc = actions.currency.selectBtc;
+export const selectEth = actions.currency.selectEth;
+export const selectOffset = actions.currency.selectOffset;
 
-// export const sellCurrencyRequest = actionCreators.Currency.sellCurrencyRequest;
-// export const sellCurrencySuccess = actionCreators.Currency.sellCurrencySuccess;
-// export const sellCurrencyFailure = actionCreators.Currency.sellCurrencyFailure;
-//
-// export const buyCurrencyRequest = actionCreators.Currency.buyCurrencyRequest;
-// export const buyCurrencySuccess = actionCreators.Currency.buyCurrencySuccess;
-// export const buyCurrencyFailure = actionCreators.Currency.buyCurrencyFailure;
+export const fetchUserRequest = actions.currency.fetchUserRequest;
+export const fetchUserSuccess = actions.currency.fetchUserSuccess;
+export const fetchUserFailure = actions.currency.fetchUserFailure;
+
+export const sellCurrencyRequest = actions.currency.sellCurrencyRequest;
+export const sellCurrencySuccess = actions.currency.sellCurrencySuccess;
+export const sellCurrencyFailure = actions.currency.sellCurrencyFailure;
+
+export const buyCurrencyRequest = actions.currency.buyCurrencyRequest;
+export const buyCurrencySuccess = actions.currency.buyCurrencySuccess;
+export const buyCurrencyFailure = actions.currency.buyCurrencyFailure;

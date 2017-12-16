@@ -13,7 +13,7 @@ import {
     ButtonOffset,
     Footer
 } from "./Styles";
-import {selectBtc, selectEth, selectOffset} from "../../actions/currency";
+import {fetchUserRequest, selectBtc, selectEth, selectOffset} from "../../actions/currency";
 import {
     getOffset,
     getSelected,
@@ -26,6 +26,8 @@ import {
     getMax,
     getMin
 } from "../../reducers/currency";
+import TradeOperations from "../TradeOperations/TradeOperations";
+import Wallet from "../Wallet";
 
 const offsets = {
     "2h": "2ч",
@@ -43,6 +45,10 @@ export class UserPage extends Component {
         this.state = {
             currency: this.props.select
         };
+    }
+
+    componentDidMount() {
+        this.props.fetchUserRequest();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -89,6 +95,8 @@ export class UserPage extends Component {
                 <Content>
                     <ContentWrapper>
                         <Main>
+                            <Wallet/>
+                            <TradeOperations/>
                             <ChartPanel>
                                 <h2>Окно графика</h2>
                                 <Offsets>{buttons}</Offsets>
@@ -155,7 +163,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
     selectBtc,
     selectEth,
-    selectOffset
+    selectOffset,
+    fetchUserRequest
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserPage);
