@@ -1,77 +1,40 @@
 import {handleActions} from 'redux-actions';
-import {combineReducers} from 'redux'
 
 import {
-    loginRequest,
-    loginReject,
-    loginSuccess,
-    registrationRequest,
-    registrationReject,
+    fetchLoginFailure, fetchLoginRequest, fetchLoginSuccess, fetchRegistrationFailure, fetchRegistrationRequest,
     logout
-} from '../actions/auth';
+} from "../actions/auth";
 
-export const isFetching = handleActions({
-        [loginRequest]: () => true,
-        [loginSuccess]: () => false,
-        [loginReject]: () => false,
-        [registrationRequest]: () => true,
-        [registrationReject]: () => false,
-        [logout]: () => false,
-    },
-    false
-);
-
-export const isFetched = handleActions({
-        [loginRequest]: () => false,
-        [loginSuccess]: () => true,
-        [loginReject]: () => true,
-        [registrationRequest]: () => false,
-        [registrationReject]: () => true,
-        [logout]: () => false,
-    },
-    false
-);
-
-export const token = handleActions({
-        [loginRequest]: () => null,
-        [loginSuccess]: (state, action) => action.payload,
-        [loginReject]: () => null,
-        [registrationRequest]: () => null,
-        [registrationReject]: () => null,
-        [logout]: () => null,
-    },
-    null
-);
-
-export const error = handleActions({
-        [loginRequest]: () => null,
-        [loginSuccess]: () => null,
-        [loginReject]: (state, action) => action.payload,
-        [registrationRequest]: () => null,
-        [registrationReject]: (state, action) => action.payload,
-        [logout]: () => null,
-    },
-    null
-);
-
-export default combineReducers({
-    isFetching,
-    isFetched,
-    token,
-    error
-});
-
-export const getIsAuthorized = state => state.auth.token;
-export const getError = state => {
-    const {error} = state.auth;
-
-    if (error) {
-        if (error.data && error.data.message) {
-            return error.data.message;
-        }
-
-        return 'Network error';
-    }
-
-    return null;
+const initialState = {
+    isAuthorized: false,
+    loginError: null,
+    registrationError: null
 };
+
+export default handleActions({
+    [fetchLoginRequest]: (state, action) => ({
+        ...initialState
+    }),
+    [fetchLoginSuccess]: (state, action) => ({
+        ...initialState,
+        isAuthorized: true
+    }),
+    [fetchLoginFailure]: (state, action) => ({
+        ...initialState,
+        loginError: action.payload
+    }),
+    [fetchRegistrationRequest]: (state, action) => ({
+        ...initialState
+    }),
+    [fetchRegistrationFailure]: (state, action) => ({
+        ...state,
+        registrationError: action.payload
+    }),
+    [logout]: (state, action) => ({
+        ...initialState
+    })
+}, initialState);
+
+export const getIsAuthorized = state => state.auth.isAuthorized;
+export const getIsLoginError = state => state.auth.loginError;
+export const getIsRegistrationError = state => state.auth.registrationError;

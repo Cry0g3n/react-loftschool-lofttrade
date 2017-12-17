@@ -1,22 +1,13 @@
-import {call, take, select, put} from 'redux-saga/effects';
-
-import {
-    loginRequest,
-    loginReject,
-    loginSuccess,
-    registrationRequest,
-    registrationReject,
-    logout
-} from '../actions/auth';
+import {call, put, select, take} from 'redux-saga/effects';
+import {clearTokenApi, login, registration, setTokenApi} from '../api';
 import {getIsAuthorized} from '../reducers/auth';
+import {getTokenFromLocalStorage, removeTokenFromLocalStorage, setTokenToLocalStorage,} from '../localstorage';
 import {
-    getTokenFromLocalStorage,
-    setTokenToLocalStorage,
-    removeTokenFromLocalStorage
-} from '../localstorage';
-import {login, registration, clearTokenApi, setTokenApi} from '../api';
+    fetchLoginFailure, fetchLoginRequest, fetchLoginSuccess, fetchRegistrationFailure, fetchRegistrationRequest,
+    logout
+} from "../actions/auth";
 
-export default function* () {
+export function* authFlow() {
     while (true) {
         const isAuthorized = yield select(getIsAuthorized);
         const localStorageToken = yield call(getTokenFromLocalStorage);
@@ -25,41 +16,41 @@ export default function* () {
         if (!isAuthorized) {
             if (localStorageToken) {
                 token = localStorageToken;
-
-                yield put(loginSuccess(token));
+                yield put(fetchLoginSuccess());
             } else {
-                const action = yield take([loginRequest, registrationRequest]);
+                const action = yield take([fetchLoginRequest, fetchRegistrationRequest]);
 
-                if (action.type === registrationRequest.toString()) {
-                    // Registration
+                if (action.type === fetchLoginRequest.toString()) {
+                    /*** Авторизация ***/
                     try {
-                        const response = yield call(registration, action.payload);
-                        token = response.data.jwt;
+                        token = yield call(login, action.payload);
+                        token = token.data.jwt;
+                        yield put(fetchLoginSuccess());
 
-                        yield put(loginSuccess(token));
                     } catch (error) {
-                        yield put(registrationReject(error));
+                        yield put(fetchLoginFailure(error.data.message));
+                        continue;
                     }
-                } else if (action.type === loginRequest.toString()) {
-                    // Login
+                } else if (action.type === fetchRegistrationRequest.toString()) {
+                    /*** Регистрация ***/
                     try {
-                        const response = yield call(login, action.payload);
-                        token = response.data.jwt;
-
-                        yield put(loginSuccess(token));
+                        token = yield call(registration, action.payload);
+                        token = token.data.jwt;
+                        yield put(fetchLoginSuccess());
                     } catch (error) {
-                        yield put(loginReject(error));
+                        yield put(fetchRegistrationFailure(error.data.message.email[0]));
+                        continue;
                     }
                 }
+
             }
+
         }
 
-        if (token) {
-            yield call(setTokenApi, token);
-            yield call(setTokenToLocalStorage, token);
-            yield take(logout);
-            yield call(removeTokenFromLocalStorage);
-            yield call(clearTokenApi);
-        }
+        yield call(setTokenApi, token);
+        yield call(setTokenToLocalStorage, token);
+        yield take(logout);
+        yield call(removeTokenFromLocalStorage);
+        yield call(clearTokenApi);
     }
 }

@@ -1,17 +1,10 @@
 import {
-    fetchUserRequest,
-    fetchUserSuccess,
-    fetchUserFailure,
-    sellCurrencyRequest,
-    sellCurrencySuccess,
-    sellCurrencyFailure,
-    buyCurrencyRequest,
-    buyCurrencySuccess,
-    buyCurrencyFailure
+    buyCurrencyFailure, buyCurrencyRequest, buyCurrencySuccess, fetchUserFailure, fetchUserRequest,
+    fetchUserSuccess, sellCurrencyFailure, sellCurrencyRequest, sellCurrencySuccess
 } from "../actions/currency";
 import {handleActions} from "redux-actions";
 
-const initialState = {
+const initiaState = {
     isLoading: false,
     coins: {
         usd: 0,
@@ -32,7 +25,7 @@ export default handleActions({
         coins: action.payload
     }),
     [fetchUserFailure]: (state, action) => ({
-        ...initialState,
+        ...initiaState,
         error: action.payload
     }),
     [sellCurrencyRequest]: (state, action) => ({
@@ -46,7 +39,7 @@ export default handleActions({
         error: null
     }),
     [sellCurrencyFailure]: (state, action) => ({
-        ...initialState,
+        ...initiaState,
         error: action.payload
     }),
     [buyCurrencyRequest]: (state, action) => ({
@@ -60,11 +53,11 @@ export default handleActions({
         error: null
     }),
     [buyCurrencyFailure]: (state, action) => ({
-        ...initialState,
+        ...initiaState,
         error: action.payload
     })
 
-}, initialState);
+}, initiaState);
 
 
 export const getError = state => state.wallet.error;

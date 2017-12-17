@@ -1,130 +1,110 @@
-import React, {Component} from 'react';
-import {Particles} from 'react-particles-js';
-import {connect} from 'react-redux';
-import particlesParams from '../../particles-params';
+import React, {PureComponent} from 'react';
+import {connect} from "react-redux";
+import Particles from "react-particles-js";
+import ParticlesParams from "../../particles-params";
+import {fetchLoginRequest, fetchRegistrationRequest} from "../../actions/auth";
+import {getIsLoginError, getIsRegistrationError} from "../../reducers/auth";
+import userIcon from '../../assets/login/user-shape.svg';
+import lockIcon from '../../assets/login/padlock-unlock.svg';
 import logo from '../../assets/Logo.svg';
-import iconUser from '../../assets/login/user-shape.svg';
-import iconPadlock from '../../assets/login/padlock-unlock.svg';
-import {loginRequest, registrationRequest} from '../../actions/auth';
-import {getError} from '../../reducers/auth';
-import {
-    FormWrapper, Form, LoginFormWrapper, Logo, Main, LoginForm, UserIcon, EmailInput,
-    EmailInputWrapper, PasswordInputWrapper, LockIcon, PasswordInput, SubmitButton, Footer
-} from "./Styles";
+
 import './AuthPage.css';
+import {Auth, AuthLogo, AuthWrapper} from "./Styles";
 
-export class AuthPage extends Component {
+
+export class AuthPage extends PureComponent {
+
     state = {
-        email: '',
-        password: '',
-        isRegistration: false
+        authData: {
+            email: '',
+            password: ''
+        },
+        registration: false
     };
 
-    changeHandler = e => {
-        const {value, name} = e.target;
-
-        this.setState({
-            [name]: value
-        });
+    changeHandler = (e) => {
+        this.setState({authData: {...this.state.authData, [e.target.name]: e.target.value}});
     };
 
-    changeMode = e => {
+    changeMode = (e) => {
         e.preventDefault();
-
-        this.setState({
-            isRegistration: !this.state.isRegistration
-        });
+        this.setState({registration: !this.state.registration});
     };
 
     submitHandler = () => {
-        const {isRegistration, email, password} = this.state;
-        const {loginRequest, registrationRequest} = this.props;
-
-        if (isRegistration) {
-            registrationRequest({email, password});
+        if (this.state.registration) {
+            this.props.fetchRegistrationRequest(this.state.authData);
         } else {
-            loginRequest({email, password});
+            this.props.fetchLoginRequest(this.state.authData);
         }
     };
 
     render() {
-        const {error} = this.props;
-        const {email, password, isRegistration} = this.state;
+
+        const bntTxt = this.state.registration ? "Регистрация" : "Вход";
+        const linkTxt = this.state.registration ? "Войти" : "Зарегистрироваться";
+        const regTxt = this.state.registration ? "Уже зарегистрированы?" : "Впервые на сайте?";
+        const error = this.props.loginError || this.props.registrationError;
 
         return (
-            <div>
-                <Main>
-                    <Particles className="particles" params={particlesParams}/>
-                    <FormWrapper>
-                        <Form>
-                            <Logo
-                                src={logo}
-                                alt='logo'
-                            >
-                            </Logo>
-                            <LoginFormWrapper className='form-wrapper'>
-                                <LoginForm>
-                                    <EmailInputWrapper>
-                                        <UserIcon
-                                            src={iconUser}
-                                        >
-                                        </UserIcon>
-                                        <EmailInput
-                                            type="email"
-                                            placeholder="Login"
+            <div className="app">
+                <Particles params={ParticlesParams} className="app__particle-bg"/>
+                <AuthWrapper>
+                    <Auth>
+                        <AuthLogo src={logo}/>
+                        <div className="auth__form">
+                            <div className="auth__row">
+                                <div className="auth__area-box">
+                                    <img className="auth__col auth__col_login" src={userIcon} alt="userIcon"></img>
+                                    <div className="auth__col">
+                                        <input
+                                            type="text"
+                                            className="auth__area auth__area_email"
+                                            placeholder="login"
                                             name="email"
-                                            value={email}
                                             onChange={this.changeHandler}
-                                        >
-                                        </EmailInput>
-                                    </EmailInputWrapper>
-                                    <PasswordInputWrapper>
-                                        <LockIcon
-                                            src={iconPadlock}
-                                        >
-                                        </LockIcon>
-                                        <PasswordInput
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="auth__row">
+                                <div className="auth__area-box">
+                                    <img className="auth__col auth__col_pass" src={lockIcon} alt="lockIcon"></img>
+                                    <div className="auth__col">
+                                        <input
                                             type="password"
-                                            placeholder="Password"
+                                            className="auth__area auth__area_password"
+                                            placeholder="password"
                                             name="password"
-                                            value={password}
                                             onChange={this.changeHandler}
-                                        >
-                                        </PasswordInput>
-                                    </PasswordInputWrapper>
-                                    {error && <div className="error">{error}</div>}
-                                    <SubmitButton onClick={this.submitHandler}>
-                                        {isRegistration ? 'Регистрация' : 'Войти'}
-                                    </SubmitButton>
-                                </LoginForm>
-                            </LoginFormWrapper>
-
-                            <Footer className='footer'>
-                                {
-                                    isRegistration ?
-                                        <div className="footer1">
-                                            Уже зарегистрированы? <a href="" onClick={this.changeMode}>Войти</a>
-                                        </div> :
-                                        <div className="footer1">
-                                            Впервые на сайте? <a href="" onClick={this.changeMode}>Регистрация</a>
-                                        </div>
-                                }
-                            </Footer>
-                        </Form>
-                    </FormWrapper>
-
-                </Main>
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            {error && <div className="auth__error">{error}</div>}
+                            <div className="auth__row auth__row_btn">
+                                <button className="auth__btn" onClick={this.submitHandler}>{bntTxt}</button>
+                            </div>
+                        </div>
+                        <div className="auth-panel">
+                            {regTxt} <span className="link change-auth-method"
+                                           onClick={this.changeMode}>{linkTxt}</span>
+                        </div>
+                    </Auth>
+                </AuthWrapper>
             </div>
-        )
-    }
+        );
+    };
 }
 
 const mapStateToProps = state => ({
-    error: getError(state)
+    loginError: getIsLoginError(state),
+    registrationError: getIsRegistrationError(state)
 });
 
 const mapDispatchToProps = {
-    loginRequest, registrationRequest
+    fetchLoginRequest,
+    fetchRegistrationRequest
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AuthPage);

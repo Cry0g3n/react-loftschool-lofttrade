@@ -1,43 +1,28 @@
 import React, {PureComponent} from 'react';
 import {connect} from "react-redux";
 import "./Wallet.css";
-import Loader from 'react-svg-spinner';
-import {
-    getError,
-    getIsLoading,
-    getCoinsMoney,
-    getCoinsBtc,
-    getCoinsEth
+import {getCoinsBtc, getCoinsEth, getCoinsMoney, getError, getIsLoading} from "../../reducers/wallet";
+import Loader from "../Loader/Loader";
 
-} from "../../reducers/wallet";
+export class Wallet extends PureComponent {
 
-export class Wallet extends PureComponent{
-
-    render(){
-        const { isLoading, coinsMoney, coinsBtc, coinsEth } = this.props;
-        return(
-            <div className="user-info">
-                <h3 className="user-info__title">Ваш счет</h3>
-                { isLoading ?
-                    <Loader size="70px" gap={4} color="fuchsia"/>
-                :
-                    <div className="user-info-list">
-                        <div className="user-info-list__item">
-                            <div className="user-info-list__area">{coinsMoney}</div>
-                            <div className="user-info-list__symbol">$</div>
-                        </div>
-                        <div className="user-info-list__item">
-                            <div className="user-info-list__area">{coinsBtc}</div>
-                            <div className="user-info-list__symbol">BTC</div>
-                        </div>
-                        <div className="user-info-list__item">
-                            <div className="user-info-list__area">{coinsEth}</div>
-                            <div className="user-info-list__symbol">ETH</div>
-                        </div>
+    render() {
+        const {isLoading, coinsMoney, coinsBtc, coinsEth} = this.props;
+        return (
+            <div className="wallet">
+                <h3 className="wallet__title">Ваш счет</h3>
+                {isLoading ?
+                    <Loader/>
+                    :
+                    <div className="wallet-list">
+                        {[[coinsMoney, '$'], [coinsBtc, 'BTC'], [coinsEth, 'ETH']].map(([amount, symbol]) => (
+                            <div className="wallet-list__item" key={symbol}>
+                                <div className="wallet-list__amount">{amount}</div>
+                                <div className="wallet-list__symbol">{symbol}</div>
+                            </div>
+                        ))}
                     </div>
-
                 }
-
             </div>
         );
     };
@@ -50,7 +35,5 @@ const mapStateToProps = state => ({
     coinsBtc: getCoinsBtc(state),
     coinsEth: getCoinsEth(state)
 });
-const mapDispatchToProps = dispatch => ({
-    //authorize: auth => dispatch(auth) 
-});
-export default connect(mapStateToProps, mapDispatchToProps)(Wallet);
+
+export default connect(mapStateToProps, null)(Wallet);

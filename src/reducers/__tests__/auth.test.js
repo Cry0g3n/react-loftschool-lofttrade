@@ -1,55 +1,36 @@
-import {
-    isFetching,
-    isFetched,
-    token,
-    error
-} from '../auth';
-import {
-    loginRequest,
-    loginReject,
-    loginSuccess,
-    registrationRequest,
-    registrationReject,
-    logout
-} from '../../actions/auth';
+import {fetchLoginFailure, fetchLoginSuccess, fetchRegistrationFailure, logout} from "../../actions/auth";
+import authReducer from "../auth";
 
-describe('Auth reducer', () => {
-    const tokenStr = 'token';
-    const networkError = new Error('test error');
+describe('Редьюсер auth', () => {
 
-    it('isFetching', () => {
-        expect(isFetching(false, loginRequest())).toBeTruthy();
-        expect(isFetching(false, loginReject())).toBeFalsy();
-        expect(isFetching(false, loginSuccess())).toBeFalsy();
-        expect(isFetching(false, registrationRequest())).toBeTruthy();
-        expect(isFetching(false, registrationReject())).toBeFalsy();
-        expect(isFetching(false, logout())).toBeFalsy();
+    const initialState = {
+        isAuthorized: false,
+        loginError: null,
+        registrationError: null
+    };
+
+    it("action fetchLoginSuccess изменяет флаг isAuthorized", () => {
+        const nextState = authReducer({isAuthorized: false}, {type: fetchLoginSuccess.toString()});
+        expect(nextState.isAuthorized).toEqual(true);
     });
 
-    it('isFetched', () => {
-        expect(isFetched(false, loginRequest())).toBeFalsy();
-        expect(isFetched(false, loginReject())).toBeTruthy();
-        expect(isFetched(false, loginSuccess())).toBeTruthy();
-        expect(isFetched(false, registrationRequest())).toBeFalsy();
-        expect(isFetched(false, registrationReject())).toBeTruthy();
-        expect(isFetched(false, logout())).toBeFalsy();
+    it("action fetchLoginFailure изменяет поле loginError", () => {
+        const error = 'error';
+        const nextState = authReducer({loginError: null}, {type: fetchLoginFailure.toString(), payload: error});
+        expect(nextState.loginError).toEqual(error);
     });
 
-    it('token', () => {
-        expect(token(null, loginRequest())).toEqual(null);
-        expect(token(null, loginReject())).toEqual(null);
-        expect(token(null, loginSuccess(tokenStr))).toEqual(tokenStr);
-        expect(token(null, registrationRequest())).toEqual(null);
-        expect(token(null, registrationReject())).toEqual(null);
-        expect(token(null, logout())).toEqual(null);
+    it("action fetchRegistrationFailure изменяет поле registrationError", () => {
+        const error = 'error';
+        const nextState = authReducer({registrationError: null}, {
+            type: fetchRegistrationFailure.toString(),
+            payload: error
+        });
+        expect(nextState.registrationError).toEqual(error);
     });
 
-    it('error', () => {
-        expect(error(null, loginRequest())).toEqual(null);
-        expect(error(null, loginReject(networkError))).toEqual(networkError);
-        expect(error(null, loginSuccess())).toEqual(null);
-        expect(error(null, registrationRequest())).toEqual(null);
-        expect(error(null, registrationReject(networkError))).toEqual(networkError);
-        expect(error(null, logout())).toEqual(null);
+    it("action logout изменяет state на initialState", () => {
+        const nextState = authReducer({registrationError: 'error'}, {type: logout.toString()});
+        expect(nextState).toEqual(initialState);
     });
 });
