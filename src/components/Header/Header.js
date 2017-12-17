@@ -43,7 +43,7 @@ export class Header extends PureComponent {
                                           className={"currency-instrument__link " + className}>
                                         <span className="currency-instrument__txt-wrap">
                                             <span
-                                                className="currency-instrument__cource">{courseValue}</span>
+                                                className="currency-instrument__course">{courseValue}</span>
                                             <span className="currency-instrument__name">{'1' + currencyName}</span>
                                         </span>
                                     </Link>
