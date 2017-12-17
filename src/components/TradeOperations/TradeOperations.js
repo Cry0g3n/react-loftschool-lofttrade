@@ -3,24 +3,12 @@ import {compose, mapProps, withProps} from 'recompose';
 import {withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {
-    getCurrentBtcPurchase, 
-    getCurrentBtcSell, 
-    getCurrentEthPurchase,
+    getCurrentBtcPurchase, getCurrentBtcSell, getCurrentEthPurchase,
     getCurrentEthSell,
 } from '../../reducers/currency';
-import {
-    buyCurrencyRequest, 
-    sellCurrencyRequest
-} from '../../actions/currency';
+import {buyCurrencyRequest, sellCurrencyRequest} from '../../actions/currency';
 import {getError} from '../../reducers/wallet';
-import {
-    ButtonPurchase, 
-    ButtonSell, 
-    Container, 
-    Currency, 
-    Input, 
-    InputWrapper
-} from "./Styles";
+import {ButtonPurchase, ButtonSell, Container, Currency, Input, InputWrapper} from "./Styles";
 
 const enhance = compose(
     withRouter,

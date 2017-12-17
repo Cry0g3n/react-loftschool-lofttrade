@@ -39,11 +39,12 @@ export class Header extends PureComponent {
                                 [ethClass, currentEthPurchase, 'ETH'],
                             ].map(([className, courseValue, currencyName]) => (
                                 <div className="currency-instrument__item" key={currencyName}>
-                                    <Link to="/trade/btc" className={"currency-instrument__link " + className}>
+                                    <Link to={'/trade/' + currencyName.toLowerCase()}
+                                          className={"currency-instrument__link " + className}>
                                         <span className="currency-instrument__txt-wrap">
                                             <span
                                                 className="currency-instrument__cource">{courseValue}</span>
-                                            <span className="currency-instrument__name">{1 + currencyName}</span>
+                                            <span className="currency-instrument__name">{'1' + currencyName}</span>
                                         </span>
                                     </Link>
                                 </div>
