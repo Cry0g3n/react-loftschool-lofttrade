@@ -52,6 +52,7 @@ export const ButtonSell = Button.extend`
     background-color: #ba564f;
   }
 `;
+
 export const ButtonPurchase = Button.extend`
   background-color: #69b3dc;
   &:hover {

@@ -1,65 +1,74 @@
-import React, {Component} from "react";
+import React, {PureComponent} from 'react';
 import {connect} from "react-redux";
-import {HeaderMain, HeaderWrapper, Logo, CurrencyWrap} from "./Styles";
-import {selectBtc, selectEth} from "../../actions/currency";
-import {withRouter} from "react-router-dom";
-import Btc from "../Currency/Btc";
-import Eth from "../Currency/Eth";
+import "./Header.css";
+import {Link} from 'react-router-dom';
+import {getCurrentBtcPurchase, getCurrentEthPurchase} from "../../reducers/currency";
+import {logout} from '../../actions/auth';
 import LogoWhite from "../../assets/Logo-white.svg";
 
-export class Header extends Component {
-    componentDidMount() {
-        const {selectBtc, selectEth} = this.props;
-        if (this.props.match.params.cur === "eth") {
-            selectEth();
-        } else {
-            selectBtc();
-        }
-    }
+export class Header extends PureComponent {
 
-    componentWillReceiveProps(nextProps) {
-        const {selectBtc, selectEth} = this.props;
-        if (this.props.match.params.cur && this.props.match.params.cur !== nextProps.match.params.cur) {
-            if (nextProps.match.params.cur === "eth") {
-                selectEth();
-            } else {
-                selectBtc();
-            }
-        }
-    }
+    logoutHandler = () => {
+        this.props.logout();
+    };
 
     render() {
-        const {currentBtc, currentEth} = this.props;
-        const {cur} = this.props.match.params;
+        const {currentBtcPurchase, currentEthPurchase, symbol} = this.props;
+        let btcClass = '';
+        let ethClass = '';
+
+        if (symbol === "btc") {
+            btcClass = "currency-instrument__link_active";
+        } else if (symbol === "eth") {
+            ethClass = "currency-instrument__link_active";
+        }
+
         return (
-            <HeaderMain>
-                <HeaderWrapper>
-                    <Logo
-                        src={LogoWhite}
-                        alt="logo"
-                    />
-                    <CurrencyWrap>
-                        <Btc
-                            disabled={cur === "btc" || !cur}
-                            price={currentBtc}
-                            currency="1 BTC"
-                        />
-                        <Eth
-                            disabled={cur === "eth"}
-                            price={currentEth}
-                            currency="1 ETH"
-                        />
-                    </CurrencyWrap>
-                    <span>User email</span>
-                </HeaderWrapper>
-            </HeaderMain>
+            <header className="header-wrap">
+                <div className="container">
+                    <div className="header">
+                        <div className="header__logo-box">
+                            <div className="header__logo">
+                                <img src={LogoWhite} className="header__logo-img" alt="logo"/>
+                            </div>
+                        </div>
+
+                        <div className="currency-instrument">
+                            {[
+                                [btcClass, currentBtcPurchase, 'BTC'],
+                                [ethClass, currentEthPurchase, 'ETH'],
+                            ].map(([className, courseValue, currencyName]) => (
+                                <div className="currency-instrument__item" key={currencyName}>
+                                    <Link to="/trade/btc" className={"currency-instrument__link " + className}>
+                                        <span className="currency-instrument__txt-wrap">
+                                            <span
+                                                className="currency-instrument__cource">{courseValue}</span>
+                                            <span className="currency-instrument__name">{1 + currencyName}</span>
+                                        </span>
+                                    </Link>
+                                </div>
+                            ))}
+                        </div>
+
+                        <nav className="header-nav">
+                            <div className="header-nav__item">
+                                <button className="header-nav__link" onClick={this.logoutHandler}>Выход</button>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+            </header>
         );
-    }
+    };
 }
 
+const mapStateToProps = state => ({
+    currentBtcPurchase: getCurrentBtcPurchase(state).toFixed(1),
+    currentEthPurchase: getCurrentEthPurchase(state).toFixed(1)
+});
+
 const mapDispatchToProps = {
-    selectBtc,
-    selectEth
+    logout
 };
 
-export default withRouter(connect(null, mapDispatchToProps)(Header));
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

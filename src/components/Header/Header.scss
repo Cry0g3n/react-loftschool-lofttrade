@@ -1,0 +1,130 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 80px;
+}
+
+.header-wrap {
+  height: 80px;
+  background: #2a2c2e;
+  width: 100%;
+}
+
+.header__logo {
+  width: 175px;
+  margin-left: -30px;
+}
+
+.header__logo-img {
+  margin-top: 6px;
+}
+
+.header__logo-box {
+  display: flex;
+  align-items: center;
+}
+
+.header__bargaining {
+  display: inline-block;
+  vertical-align: top;
+  font-size: 18px;
+  margin-left: 42px;
+  text-decoration: none;
+}
+
+.currency-instrument {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: 58px;
+}
+
+.currency-instrument__item {
+  margin-right: 20px;
+}
+
+.currency-instrument__link {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  background: #404243;
+  height: 80px;
+  width: 140px;
+  color: white;
+  font-size: 0;
+  transition: 0.25s ease;
+}
+
+.currency-instrument__link:hover {
+  color: #4db6e2;
+}
+
+.currency-instrument__cource {
+  display: inline-block;
+  vertical-align: top;
+  width: 100%;
+  text-align: center;
+  font-size: 18px;
+}
+
+.currency-instrument__name {
+  display: inline-block;
+  vertical-align: top;
+  width: 100%;
+  text-align: center;
+  font-size: 18px;
+  font-family: "RobotoBold", "Arial", "sans-serif";
+}
+
+.currency-instrument__txt-wrap {
+  display: inline-block;
+  vertical-align: top;
+  width: 100%;
+  text-align: center;
+  line-height: 23px;
+}
+
+.header-nav {
+  display: flex;
+}
+
+.header-nav__item {
+  margin-right: 20px;
+  position: relative;
+}
+
+.header-nav__link {
+  display: inline-block;
+  vertical-align: top;
+  color: white;
+  background: #555658;
+  border-radius: 15px;
+  height: 30px;
+  line-height: 28px;
+  font-size: 18px;
+  padding: 0 20px;
+  text-decoration: none;
+  transition: 0.25s ease;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  font-weight: normal;
+
+  &:hover, .currency-instrument__link_active {
+    color: #4db6e2;
+  }
+}
+
+.header-nav__quantity {
+  position: absolute;
+  top: -11px;
+  right: -12px;
+  border-radius: 50%;
+  background: #9f3232;
+  width: 30px;
+  height: 30px;
+  color: white;
+  font-size: 14px;
+  text-align: center;
+  line-height: 28px;
+}

@@ -1,16 +1,9 @@
-import {takeLatest, put, call} from 'redux-saga/effects';
+import {call, put, takeLatest} from 'redux-saga/effects';
 import {
-    fetchUserRequest,
-    fetchUserSuccess,
-    fetchUserFailure,
-    sellCurrencyRequest,
-    sellCurrencySuccess,
-    sellCurrencyFailure,
-    buyCurrencyRequest,
-    buyCurrencySuccess,
-    buyCurrencyFailure
+    buyCurrencyFailure, buyCurrencyRequest, buyCurrencySuccess, fetchUserFailure, fetchUserRequest,
+    fetchUserSuccess, sellCurrencyFailure, sellCurrencyRequest, sellCurrencySuccess
 } from '../actions/currency';
-import {getWallet, sellCurrency, buyCurrency} from '../api';
+import {buyCurrency, getWallet, sellCurrency} from '../api';
 
 function* fetchUserFlow(action) {
     try {
@@ -21,7 +14,6 @@ function* fetchUserFlow(action) {
     }
 }
 
-// sell
 function* sellOperationFlow(action) {
     try {
         const response = yield call(sellCurrency, action.payload.currencyName, action.payload.value);
@@ -35,7 +27,6 @@ function* sellOperationFlow(action) {
     }
 }
 
-// buy
 function* buyOperationFlow(action) {
     try {
         const response = yield call(buyCurrency, action.payload.currencyName, action.payload.value);

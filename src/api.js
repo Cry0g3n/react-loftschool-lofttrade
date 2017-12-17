@@ -3,12 +3,12 @@ import axios from 'axios';
 axios.defaults.headers.post['Accept'] = '*/*';
 
 const instance = axios.create({
-    baseURL: 'http://lorem-ipsum.online/',
+    baseURL: 'https://lorem-ipsum.online/',
     headers: {Accept: '*/*'},
 });
 
 const jsonInstance = axios.create({
-    baseURL: 'http://lorem-ipsum.online/',
+    baseURL: 'https://lorem-ipsum.online/',
     headers: {'Content-Type': 'application/json'},
 });
 
@@ -46,7 +46,6 @@ export const buyCurrency = (currency, value) =>
 
 export const sellCurrency = (currency, value) =>
     instance.get(`stock/exchange?symbol=${currency}&operation=sell&sum=${value}`).then(response => {
-        console.log(response)
         if (response.data.result === 'error') return Promise.reject(response.data.message);
         return response;
     });
